@@ -39,31 +39,48 @@
 
         <br><br>
 
-        <div class="container-md" id="about-me">
-            <h2 class="text-center">About Me</h2>
-            <br>
-            <md-block>
-                I'm vinkami, a student in Hong Kong, a developer for anything I'm interested about, and a bit of a YouTuber / Twitch streamer! \
-                I know **Python**, **Kotlin**, and a bit of **Java** and **C++**.
-            </md-block>
-        </div>
+        <form action="javascript:setVideo()">
+            <label>
+                Video Width: <input id="videoWidth" type="number" placeholder="Width" value="1920"><br>
+                Video Height: <input id="videoHeight" type="number" placeholder="Height" value="1080"><br>
+                <input id="videoButton" type="submit" value="Enable Video">
+                <input id="videoAction" type="hidden" value="1">
+            </label>
+        </form>
 
-        <br><br>
-
-        <div class="container-md" id="find-me">
-            <h2 class="text-center">Find Me</h2>
-            <br>
-            <md-block>
-                [discord]: https://discord.gg/s7vGZFz9C8
-                [youtube]: https://youtube.com/@vinkamiii
-                [twitter]: https://twitter.com/vinkami_krip
-                [twitch]: https://twitch.tv/vinkami
-                [github]: https://github.com/vinkami
-
-                I sometimes post videos or stream on [YouTube][youtube] and [Twitch][twitch]. \
-                Besides, I have ongoing projects that can be seen on [GitHub][github].\
-                You may talk to me directly in [my Discord server][discord] or through [Twitter][twitter].
-            </md-block>
-        </div>
+        <video autoplay id="video"></video>
     </body>
+    <script>
+        function setVideo() {
+            let actionEle = document.getElementById("videoAction")
+            let buttonEle = document.getElementById("videoButton")
+            let videoEle = document.getElementById("video")
+
+            if (actionEle.value === "1") {
+                actionEle.value = "0"
+                buttonEle.value = "Disable Video"
+
+                videoEle.width = document.getElementById("videoWidth").value
+                videoEle.height = document.getElementById("videoHeight").value
+                videoEle.setAttribute("controls", "")
+
+                if (navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({video: true, audio: true})
+                    .then(function (stream) {
+                        videoEle.srcObject = stream
+                    })
+                    .catch(function (e) {
+                        console.log("video error")
+                        console.log(e)
+                    })
+                }
+
+            } else {
+                actionEle.value = "1"
+                buttonEle.value = "Enable Video"
+                videoEle.srcObject = null
+                videoEle.removeAttribute("controls")
+            }
+        }
+    </script>
 </html>
