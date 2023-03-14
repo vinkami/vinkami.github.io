@@ -13,23 +13,24 @@
     <body>
         <nav class="navbar navbar-expand-sm bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">vinkami</a>
+                <a class="navbar-brand" href="/">vinkami</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-content" aria-controls="nav-content" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="nav-content">
                     <ul class="navbar-nav me-auto">
-                        <li class="navbar-item">
-                            <a href="/#about-me" class="nav-link active">About Me</a>
-                        </li>
-                        <li class="navbar-item">
-                            <a href="/#find-me" class="nav-link active">Find Me</a>
+                        <li class="navbar-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Home</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/#about-me" class="nav-link dropdown-item">About Me</a></li>
+                                <li><a href="/#find-me" class="nav-link dropdown-item">Find Me</a></li>
+                            </ul>
                         </li>
                         <li class="navbar-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Useful Tools</a>
                             <ul class="dropdown-menu">
-                                <li><a href="/tool/avcombiner.html" class="dropdown-item">Audio-Video Combiner</a></li>
+                                <li><a href="/tool/avcombiner.html" class="nak-link dropdown-item">Audio-Video Combiner</a></li>
                             </ul>
                         </li>
                     </ul>
