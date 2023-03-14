@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
+    <style>
+        br {
+            line-height: 150%;
+        }
+    </style>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,18 +43,34 @@
              </div>
         </nav>
 
-        <br><br>
+        <br>
 
-        <form action="javascript:setVideo()">
-            <label>
-                Video Width: <input id="videoWidth" type="number" placeholder="Width" value="1920"><br>
-                Video Height: <input id="videoHeight" type="number" placeholder="Height" value="1080"><br>
+        <div class="container-md">
+            <md-block>
+                Instruction:
+                1. With a regular webcam / HDMI capturer, find yourself a stream of video signal
+                2. Together with the audio stream from microphone / HDMI capturer, allow them to be used on this webpage
+                3. Set a preferable resolution and framerate. The default (1080p60) might be good already
+                4. Click "Enable Video" to see the video stream below. Switching to full screen is also possible
+                5. Open a Discord live or something. Use the page however you want
+            </md-block>
+
+            <br>
+
+            <form action="javascript:setVideo()">
+                <label>
+                    Width: <input id="videoWidth" type="number" value="1920"><br>
+                    Height: <input id="videoHeight" type="number" value="1080"><br>
+                    FrameRate: <input id="videoFPS" type="number" value="60"><br>
+                </label><br>
                 <input id="videoButton" type="submit" value="Enable Video">
                 <input id="videoAction" type="hidden" value="1">
-            </label>
-        </form>
+            </form>
+        </div>
 
-        <video autoplay id="video"></video>
+        <br>
+
+        <video autoplay id="video" class="object-fit-contain"></video>
     </body>
     <script>
         function setVideo() {
@@ -60,20 +81,31 @@
             if (actionEle.value === "1") {
                 actionEle.value = "0"
                 buttonEle.value = "Disable Video"
-
-                videoEle.width = document.getElementById("videoWidth").value
-                videoEle.height = document.getElementById("videoHeight").value
                 videoEle.setAttribute("controls", "")
 
+                let width = document.getElementById("videoWidth").value
+                let height = document.getElementById("videoHeight").value
+                let fps = document.getElementById("videoFPS").value
+
                 if (navigator.mediaDevices.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({video: true, audio: true})
-                    .then(function (stream) {
-                        videoEle.srcObject = stream
-                    })
-                    .catch(function (e) {
-                        console.log("video error")
-                        console.log(e)
-                    })
+                    let constraints = {
+                        video: {width: width, height: height, frameRate: fps},
+                        audio: {noiseSuppression: false, echoCancellation: false}
+                    }
+                    navigator.mediaDevices.getUserMedia(constraints)
+                        .then(function (stream) {
+                            let settings = stream.getVideoTracks()[0].getSettings()
+                            let width = settings.width.toString()
+                            let height = settings.height.toString()
+                            console.log(settings)
+                            videoEle.setAttribute('width', width)
+                            videoEle.setAttribute('height', height)
+                            videoEle.srcObject = stream
+                        })
+                        .catch(function (e) {
+                            console.log("video error")
+                            console.log(e)
+                        })
                 }
 
             } else {
@@ -83,5 +115,12 @@
                 videoEle.removeAttribute("controls")
             }
         }
+
+        // function updateVideoSize() {
+        //     navigator.mediaDevices.getUserMedia({video: true, audio: true})
+        //         .then(function (stream) {
+        //
+        //         })
+        // }
     </script>
 </html>
