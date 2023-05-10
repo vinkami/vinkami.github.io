@@ -33,7 +33,7 @@ jobs:
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: ./
+          source: ./pages
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
@@ -49,13 +49,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
-        
-      - name: GitHub Pages Overwriter
-        # You may pin to the exact commit or the version.
-        # uses: rayluo/github-pages-overwriter@c394294cfbfd3f239625a54b6c2b36e6a47bbfee
-        uses: rayluo/github-pages-overwriter@v1.3
-        with:
-          # The name of the source directory that you wish it to become the wwwroot of your website
-          source-directory: ./pages # optional, default is .
-          # The name of the branch that would be OVERWRITTEN by current workdir, you will then configure your Github Pages to serve this branch.
-          target-branch: gh_pages # optional, default is gh-pages
