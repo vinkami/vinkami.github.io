@@ -18,9 +18,10 @@ if not os.path.exists("pages"):
     os.mkdir("pages")
     print("Created /pages")
 
-# Remove all files in /pages
-for file in os.listdir("pages"):
-    os.remove(f"pages/{file}")
+# Walk through /pages and remove all files
+for root, dirs, files in os.walk("pages"):
+    for f in files:
+        os.remove(os.path.join(root, f))
 print("Removed all files in /pages")
 
 # Generate all pages
