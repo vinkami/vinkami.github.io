@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}vinkami | avcombiner {% endblock %}
+
+{% block content %}
+    <div class="container-md">
+        <md-block>
+            Instruction:
+            1. With a regular webcam / HDMI capturer, find yourself a stream of video signal
+            2. Together with the audio stream from microphone / HDMI capturer, allow them to be used on this webpage
+            3. Set a preferable resolution and framerate. The default (1080p60) might be good already
+            4. Click "Enable Video" to see the video stream below. Switching to full screen is also possible
+            5. Open a Discord live or something. Use the page however you want
+        </md-block>
+
+        <br>
+
+        <form action="javascript:setVideo()">
+            <label>
+                Width: <input id="videoWidth" type="number" value="1920"><br>
+                Height: <input id="videoHeight" type="number" value="1080"><br>
+                FrameRate: <input id="videoFPS" type="number" value="60"><br>
+            </label><br>
+            <input id="videoButton" type="submit" value="Enable Video">
+            <input id="videoAction" type="hidden" value="1">
+        </form>
+    </div>
+
+    <br>
+
+    <video autoplay id="video" class="object-fit-contain"></video>
+
+    <script>
+        function setVideo() {
+            let actionEle = document.getElementById("videoAction")
+            let buttonEle = document.getElementById("videoButton")
+            let videoEle = document.getElementById("video")
+
+            if (actionEle.value === "1") {
+                actionEle.value = "0"
+                buttonEle.value = "Disable Video"
+                videoEle.setAttribute("controls", "")
+
+                let width = document.getElementById("videoWidth").value
+                let height = document.getElementById("videoHeight").value
+                let fps = document.getElementById("videoFPS").value
+
+                if (navigator.mediaDevices.getUserMedia) {
+                    let constraints = {
+                        video: {width: width, height: height, frameRate: fps},
+                        audio: {noiseSuppression: false, echoCancellation: false}
+                    }
+                    navigator.mediaDevices.getUserMedia(constraints)
+                        .then(function (stream) {
+                            let settings = stream.getVideoTracks()[0].getSettings()
+                            let width = settings.width.toString()
+                            let height = settings.height.toString()
+                            console.log(settings)
+                            videoEle.setAttribute('width', width)
+                            videoEle.setAttribute('height', height)
+                            videoEle.srcObject = stream
+                        })
+                        .catch(function (e) {
+                            console.log("video error")
+                            console.log(e)
+                        })
+                }
+
+            } else {
+                actionEle.value = "1"
+                buttonEle.value = "Enable Video"
+                videoEle.srcObject = null
+                videoEle.removeAttribute("controls")
+            }
+        }
+
+        // function updateVideoSize() {
+        //     navigator.mediaDevices.getUserMedia({video: true, audio: true})
+        //         .then(function (stream) {
+        //
+        //         })
+        // }
+    </script>
+{% endblock %}
