@@ -1,20 +1,7 @@
 # This file is used to generate the static html pages for the website from jinja2 templates in the /.template/ folder.
 
-URLS = {
-    # static file: template file
-    "index.html": "index.html",
-    "tool/avcombiner.html": "tool/avcombiner.html",
-}
 
-VARIABLES = {
-    "discord": "https://discord.gg/vinkami",
-    "youtube": "https://youtube.com/@vinkamiii",
-    "twitter": "https://twitter.com/vinkamiii",
-    "twitch": "https://twitch.tv/vinkami",
-    "github": "https://github.com/vinkami"
-}
-
-
+from constants import URLS, RENDER_ARGS
 from jinja2 import Environment, FileSystemLoader
 import os
 
@@ -42,5 +29,5 @@ if __name__ == '__main__':
             os.makedirs(os.path.dirname(f"pages/{static_name}"), exist_ok=True)
 
         with open(f"pages/{static_name}", "w", encoding="utf-8") as f:
-            f.write(template.render(VARIABLES))
+            f.write(template.render(RENDER_ARGS))
     print("Generated all pages")

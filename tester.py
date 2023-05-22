@@ -1,5 +1,6 @@
 from uvicorn import run
-from page_generator import URLS, VARIABLES, env
+from page_generator import env
+from constants import URLS, RENDER_ARGS
 
 
 async def app(scope, receive, send):
@@ -15,7 +16,7 @@ async def app(scope, receive, send):
 
     path = scope["path"][1:]  # remove leading /
     try:
-        code = env.get_template(URLS[path]).render(VARIABLES)
+        code = env.get_template(URLS[path]).render(RENDER_ARGS)
         await send({
             'type': 'http.response.body',
             'body': code.encode("utf-8")
