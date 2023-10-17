@@ -23,6 +23,7 @@ if __name__ == '__main__':
 
     # Generate all pages
     for static_name, template_name in URLS.items():
+        if template_name[0] == "-": continue
         template = env.get_template(template_name)
         # create missing folder
         if "/" in static_name:
